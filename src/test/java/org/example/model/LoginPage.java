@@ -18,6 +18,8 @@ public class LoginPage {
     @FindBy(xpath = "//input[@class = 'submit']")
     WebElement loginButton;
 
+    @FindBy(xpath = "/html/body/div[1]/div/div/div/h2")
+    WebElement wrongLoginDiv;
     public LoginPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
