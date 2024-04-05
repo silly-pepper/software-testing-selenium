@@ -6,11 +6,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-
 @Getter
 public class MainPage {
 
-    @FindBy(xpath = "//a[@href = '/login/']")
+    @FindBy(xpath = "//div[@class = 'col col-span-9 col-nav']/nav/ul/li/a[@href = '/login/']")
     WebElement loginHref;
 
     public MainPage(WebDriver driver) {
