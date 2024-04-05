@@ -21,10 +21,10 @@ public class SignUpPage {
     @FindBy(xpath = "//input[@name = 'new_password']")
     WebElement password;
 
-    @FindBy(xpath = "//input[@name = 'terms']")
+    @FindBy(xpath = "/html/body/div[1]/div/div/form/div[3]/input")
     WebElement acceptButton;
 
-    @FindBy(xpath = "//input[@type = 'submit' and @value = 'Create Account']")
+    @FindBy(xpath = "/html/body/div[1]/div/div/form/input[6]")
     WebElement signUpButton;
 
     @FindBy(xpath = "//input[@name = 'website_domain']")

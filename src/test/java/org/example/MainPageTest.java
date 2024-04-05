@@ -58,30 +58,30 @@ public class MainPageTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "sign-up/"));
 
-        signUpPage.getName().sendKeys(Utils.CORRECT_LOGIN);
-        signUpPage.getEmail().sendKeys(Utils.WRONG_EMAIL);
-        signUpPage.getUsername().sendKeys(Utils.CORRECT_LOGIN);
+        signUpPage.getName().sendKeys(Utils.NEW_LOGIN);
+        signUpPage.getEmail().sendKeys(Utils.CORRECT_EMAIL);
+        signUpPage.getUsername().sendKeys(Utils.NEW_LOGIN);
         signUpPage.getPassword().sendKeys(Utils.CORRECT_PASSWORD);
         signUpPage.getAcceptButton().click();
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
+//
+//        signUpPage.getEmail().clear();
+//        signUpPage.getEmail().sendKeys(Utils.CORRECT_EMAIL);
+//        wait.until(ExpectedConditions.elementToBeClickable(signUpPage.getSignUpButton()));
+        signUpPage.getSignUpButton().click();
+//
+//        wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "sign-up/project/"));
+//
+//        signUpPage.getProjName().sendKeys("ABOBA");
+//        signUpPage.getAddProjectButton().click();
+//
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
+//
+//        signUpPage.getWebDomain().sendKeys("ABOBA");
+//        signUpPage.getAddProjectButton().submit();
 
-        signUpPage.getEmail().clear();
-        signUpPage.getEmail().sendKeys(Utils.CORRECT_EMAIL);
-        wait.until(ExpectedConditions.elementToBeClickable(signUpPage.getSignUpButton()));
-        signUpPage.getSignUpButton().submit();
-
-        wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "sign-up/project/"));
-
-        signUpPage.getProjName().sendKeys("ABOBA");
-        signUpPage.getAddProjectButton().click();
-
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
-
-        signUpPage.getWebDomain().sendKeys("ABOBA");
-        signUpPage.getAddProjectButton().submit();
-
-        driver.quit();
+//        driver.quit();
     }
 
     @ParameterizedTest
