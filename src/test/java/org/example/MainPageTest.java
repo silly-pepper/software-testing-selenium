@@ -40,11 +40,13 @@ public class MainPageTest {
         mainPage.getLoginHref().click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "login/"));
-
         loginPage.getUsername().sendKeys(Utils.CORRECT_LOGIN);
         loginPage.getPassword().sendKeys(Utils.CORRECT_PASSWORD);
         loginPage.getLoginButton().click();
-
+        String expectedUrl= driver.getCurrentUrl();
+        String actualUrl= "https://statcounter.com/";
+        assertEquals(actualUrl, expectedUrl);
+        assertEquals(Utils.CORRECT_LOGIN, projectPage.getSidebarName().getText());
         driver.quit();
     }
 
@@ -79,10 +81,6 @@ public class MainPageTest {
         signUpPage.getWebDomain().sendKeys("ABOBA");
         signUpPage.getAddProjectButton().submit();
 
-        String expectedUrl= driver.getCurrentUrl();
-        String actualUrl= "https://statcounter.com/";
-        assertEquals(actualUrl, expectedUrl);
-        assertEquals(Utils.CORRECT_LOGIN, projectPage.getSidebarName().getText());
         driver.quit();
     }
 
