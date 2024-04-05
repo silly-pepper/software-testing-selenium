@@ -2,17 +2,16 @@ package org.example;
 
 import org.example.model.LoginPage;
 import org.example.model.MainPage;
+import org.example.model.SignUpPage;
 import org.example.model.ProjectPage;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.junit.jupiter.api.*;
 
 import java.time.Duration;
 import java.util.stream.Stream;
@@ -24,12 +23,14 @@ public class MainPageTest {
 
     private MainPage mainPage;
     private LoginPage loginPage;
+    private SignUpPage signUpPage;
     private ProjectPage projectPage;
 
     public void setUpDriver(WebDriver driver) {
         mainPage = new MainPage(driver);
         loginPage = new LoginPage(driver);
         projectPage = new ProjectPage(driver);
+        signUpPage = new SignUpPage(driver);
     }
 
     @ParameterizedTest
@@ -43,6 +44,41 @@ public class MainPageTest {
         loginPage.getUsername().sendKeys(Utils.CORRECT_LOGIN);
         loginPage.getPassword().sendKeys(Utils.CORRECT_PASSWORD);
         loginPage.getLoginButton().click();
+
+        driver.quit();
+    }
+
+    @ParameterizedTest
+    @MethodSource("driverProvider")
+    void signUpTest(WebDriver driver) {
+        setUpDriver(driver);
+        mainPage.getSignupHref().click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "sign-up/"));
+
+        signUpPage.getName().sendKeys(Utils.CORRECT_LOGIN);
+        signUpPage.getEmail().sendKeys(Utils.WRONG_EMAIL);
+        signUpPage.getUsername().sendKeys(Utils.CORRECT_LOGIN);
+        signUpPage.getPassword().sendKeys(Utils.CORRECT_PASSWORD);
+        signUpPage.getAcceptButton().click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
+
+        signUpPage.getEmail().clear();
+        signUpPage.getEmail().sendKeys(Utils.CORRECT_EMAIL);
+        wait.until(ExpectedConditions.elementToBeClickable(signUpPage.getSignUpButton()));
+        signUpPage.getSignUpButton().submit();
+
+        wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "sign-up/project/"));
+
+        signUpPage.getProjName().sendKeys("ABOBA");
+        signUpPage.getAddProjectButton().click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
+
+        signUpPage.getWebDomain().sendKeys("ABOBA");
+        signUpPage.getAddProjectButton().submit();
+
         String expectedUrl= driver.getCurrentUrl();
         String actualUrl= "https://statcounter.com/";
         assertEquals(actualUrl, expectedUrl);
