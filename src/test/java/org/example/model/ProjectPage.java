@@ -31,10 +31,16 @@ public class ProjectPage {
     WebElement undoDeletion;
 
     @FindBy(xpath = "/html/body/div[4]/div[3]/div/div[2]/div/div/div[4]/table/tbody/tr")
-    WebElement project;
+    WebElement firstProject;
+
+    @FindBy(xpath = "/html/body/div[4]/div[3]/div/div[2]/div/div/div[4]/table/tbody/tr[1]/td[1]/a")
+    WebElement firstProjectName;
 
     @FindBy(xpath = "/html/body/div[4]/div[3]/div/div[3]/div/div/form/div/div[15]/span")
     WebElement choseBasicPlanButton;
+
+    @FindBy(xpath = "/html/body/div[4]/div[3]/div/div[1]/header/nav/ul/li[1]/a")
+    WebElement projectHref;
 
     public ProjectPage(WebDriver driver) {
         PageFactory.initElements(driver, this);

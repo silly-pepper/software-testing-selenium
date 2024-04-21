@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.model.AddProjectPage;
-import org.example.model.LoginPage;
-import org.example.model.MainPage;
-import org.example.model.ProjectPage;
+import org.example.model.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
@@ -16,10 +13,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class ProjectPageTest {
 
     private ProjectPage projectPage;
     private AddProjectPage addProjectPage;
+    private UpdateProjectPage updateProjectPage;
     private MainPage mainPage;
     private LoginPage loginPage;
     private WebDriverWait wait;
@@ -29,6 +29,7 @@ public class ProjectPageTest {
         loginPage = new LoginPage(driver);
         projectPage = new ProjectPage(driver);
         addProjectPage = new AddProjectPage(driver);
+        updateProjectPage = new UpdateProjectPage(driver);
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
@@ -65,6 +66,9 @@ public class ProjectPageTest {
         addProjectPage.getLetsGetStartedButton().click();
 
         wait.until(ExpectedConditions.urlToBe("https://statcounter.com/"));
+        assertEquals("aboba", projectPage.getFirstProjectName().getText());
+        projectPage.getSettingsButton().click();
+        projectPage.getDeleteProjectButton().click();
 
         driver.quit();
     }
@@ -89,6 +93,17 @@ public class ProjectPageTest {
         projectPage.getSettingsButton().click();
         projectPage.getEditProjectButton().click();
         wait.until(ExpectedConditions.urlContains("/settings/"));
+
+        updateProjectPage.getTitle().clear();
+        updateProjectPage.getTitle().sendKeys("aboba2");
+        updateProjectPage.getSaveButton().click();
+
+        wait.until(ExpectedConditions.visibilityOf(updateProjectPage.getSuccessMessage()));
+
+        updateProjectPage.getTitle().clear();
+        updateProjectPage.getTitle().sendKeys("aboba");
+        updateProjectPage.getSaveButton().click();
+
         driver.quit();
     }
 
@@ -111,10 +126,10 @@ public class ProjectPageTest {
 
         projectPage.getSettingsButton().click();
         projectPage.getDeleteProjectButton().click();
-        wait.until(ExpectedConditions.invisibilityOf(projectPage.getProject()));
+        wait.until(ExpectedConditions.invisibilityOf(projectPage.getFirstProject()));
 
         projectPage.getUndoDeletion().click();
-        wait.until(ExpectedConditions.visibilityOf(projectPage.getProject()));
+        wait.until(ExpectedConditions.visibilityOf(projectPage.getFirstProject()));
         driver.quit();
     }
 
