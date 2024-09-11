@@ -58,29 +58,41 @@ public class MainPageTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "sign-up/"));
 
-        signUpPage.getName().sendKeys(Utils.CORRECT_LOGIN + "7");
+        signUpPage.getName().sendKeys(Utils.NEW_LOGIN);
         signUpPage.getEmail().sendKeys(Utils.CORRECT_EMAIL);
-        signUpPage.getUsername().sendKeys(Utils.CORRECT_LOGIN + "7");
+        signUpPage.getUsername().sendKeys(Utils.NEW_LOGIN);
         signUpPage.getPassword().sendKeys(Utils.CORRECT_PASSWORD);
         signUpPage.getAcceptButton().click();
 
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[1]/div/div/form/label[3]")));
 
-//        signUpPage.getEmail().clear();
-//        signUpPage.getEmail().sendKeys(Utils.CORRECT_EMAIL);
+        signUpPage.getEmail().clear();
+        signUpPage.getEmail().sendKeys(Utils.CORRECT_EMAIL);
         signUpPage.getSignUpButton().click();
 
-//        wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "sign-up/project/"));
+        mainPage.getLoginHref().click();
+        wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "login/"));
+        loginPage.getUsername().sendKeys(Utils.NEW_LOGIN);
+        loginPage.getPassword().sendKeys(Utils.CORRECT_PASSWORD);
+        loginPage.getLoginButton().click();
+        String expectedUrl= driver.getCurrentUrl();
+        String actualUrl= "https://statcounter.com/";
+        assertEquals(actualUrl, expectedUrl);
+        assertEquals(Utils.CORRECT_LOGIN, projectPage.getSidebarName().getText());
+        driver.quit();
 
-//        signUpPage.getProjName().sendKeys("ABOBA");
-//        signUpPage.getAddProjectButton().click();
-//
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
-//
-//        signUpPage.getWebDomain().sendKeys("ABOBA");
-//        signUpPage.getAddProjectButton().click();
 
-//        driver.quit();
+        wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "sign-up/project/"));
+
+        signUpPage.getProjName().sendKeys("ABOBA");
+        signUpPage.getAddProjectButton().click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@class = 'error']")));
+
+        signUpPage.getWebDomain().sendKeys("ABOBA");
+        signUpPage.getAddProjectButton().submit();
+
+        driver.quit();
     }
 
     @ParameterizedTest
@@ -90,6 +102,7 @@ public class MainPageTest {
         mainPage.getLoginHref().click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + "login/"));
+
 
         loginPage.getUsername().sendKeys(Utils.INCORRECT_LOGIN);
         loginPage.getPassword().sendKeys(Utils.CORRECT_PASSWORD);
@@ -114,6 +127,8 @@ public class MainPageTest {
         System.out.println(loginPage.getWrongLoginDiv().getText());
         driver.quit();
     }
+
+
 
     public static Stream<Object[]> driverProvider() {
         WebDriver cDriver = new ChromeDriver();
